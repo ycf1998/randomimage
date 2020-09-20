@@ -44,6 +44,7 @@ exports.handler = async function http(req) {
 	  pageSize = req.queryStringParameters.size;
   }
   let imgs = await loadImage(keyword, pageNum, pageSize);
+	console.log(imgs);
   fs.readFile('./index.html', (err, data) => {
       if (err) {
         return {
@@ -55,6 +56,7 @@ exports.handler = async function http(req) {
       let body = template.render(data.toString(), {
           result: imgs
       });
+	console.log(body);
       return {
         statusCode: 200,
         headers: {'Content-Type': 'text/html; charset=utf8'},
