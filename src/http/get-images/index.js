@@ -44,15 +44,11 @@ exports.handler = async function http(req) {
 	  pageSize = req.queryStringParameters.size;
   }
   let imgs = await loadImage(keyword, pageNum, pageSize);
-  fs.readFile('./index.html', (err, data) => {
-	if (err) console.log('err',err);
-	console.log(data);
-	let html = template.render(data.toString(), { result: imgs  });
-
-  })
+  let data = fs.readFileSync('./index.html')
+  let body = template.render(data.toString(), { result: imgs  });
   return {
         statusCode: 200,
         headers: {'Content-Type': 'text/html; charset=utf8'},
-        body: 'come on'
+        body
       }
 }
