@@ -4,4 +4,4 @@ begin-app
 @static
 
 @http
-get /load/image
+get /images
