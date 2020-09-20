@@ -34,7 +34,7 @@ function loadImage(keyword = '新垣结衣', pageNum = 0, pageSize = 30) {
 	})
 }  
 exports.handler = async function http(req) {
-  let pageNum = Math.random() * 25 * params.rn;
+  let pageNum = Math.floor(Math.random() * 20 * params.rn);
  console.log(pageNum)
   let keyword;
   let pageSize;
