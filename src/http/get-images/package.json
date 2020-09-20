@@ -1,0 +1,19 @@
+{
+  "name": "ramdomenjoy",
+  "version": "1.0.0",
+  "description": "随机表情包",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "money",
+  "license": "ISC",
+  "dependencies": {
+    "art-template": "^4.13.2",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "express-art-template": "^1.0.1",
+    "node-fetch": "^2.6.1",
+    "superagent": "^6.1.0"
+  }
+}
