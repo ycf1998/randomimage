@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>随机图片</title>
+		<link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+		{{each result}}
+			{{if $index%5 == 0}}<div class="row">{{/if}}
+				<div class="col"><img src="{{$value.href}}" alt="{{$value.alt}}" class="img-thumbnail"></div>
+			{{if $index%4 == 5}}</div>{{/if}}
+		{{/each}}
+		</div>
+		<p style="position: fixed;bottom: 0;right: 0;">@Money</p>
+	</body>
+	<script>
+
+	</script>
+</html>
