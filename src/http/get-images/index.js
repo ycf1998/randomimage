@@ -37,8 +37,8 @@ let first = true
 exports.handler = async function http(req) {
   let pageNum = first ? 0 : params.pn + params.rn;
   fisrt = false;
-  let keyword = null;
-  let pageSize = null;
+  let keyword;
+  let pageSize;
   if (req.queryStringParameters != null) {
 	  keyword = req.queryStringParameters.word;
 	  pageSize = req.queryStringParameters.size;
