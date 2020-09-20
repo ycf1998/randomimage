@@ -33,13 +33,10 @@ function loadImage(keyword = '新垣结衣', pageNum = 0, pageSize = 30) {
 		return new Promise((resolve, reject) => resolve(result));
 	})
 }  
-let first = true
 exports.handler = async function http(req) {
-  let pageNum = first ? 0 : params.pn + params.rn;
-  fisrt = false;
+  let pageNum = Math.random() * 20 * params.rn;
   let keyword;
   let pageSize;
-  console.log(pageNum)
   if (req.queryStringParameters != null) {
 	  keyword = req.queryStringParameters.word;
 	  pageSize = req.queryStringParameters.size;
