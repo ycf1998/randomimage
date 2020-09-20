@@ -37,12 +37,15 @@ function loadImage(keyword = '新垣结衣', pageNum = 0, pageSize = 30) {
 }  
 let first = true
 exports.handler = async function http(req) {
-	console.log(req)
-//  let keyword = req.queryStringParameters.word;
-  //let pageNum = first ? 0 : params.pn + params.rn;
-  //let pageSize = req.queryStringParameters.size;
+  let pageNum = first ? 0 : params.pn + params.rn;
   fisrt = false;
-  let imgs = await loadImage();
+  let keyword = null;
+  let pageSize = null;
+  if (req.queryStringParameters != null) {
+	  keyword = req.queryStringParameters.word;
+	  pageSize = req.queryStringParameters.size;
+  }
+  let imgs = await loadImage(keyword, pageNum, pageSize);
   fs.readFile('./index.html', (err, data) => {
       if (err) {
         return {
