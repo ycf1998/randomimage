@@ -39,6 +39,7 @@ exports.handler = async function http(req) {
   fisrt = false;
   let keyword;
   let pageSize;
+  console.log(pageNum)
   if (req.queryStringParameters != null) {
 	  keyword = req.queryStringParameters.word;
 	  pageSize = req.queryStringParameters.size;
