@@ -44,23 +44,16 @@ exports.handler = async function http(req) {
 	  pageSize = req.queryStringParameters.size;
   }
   let imgs = await loadImage(keyword, pageNum, pageSize);
-	console.log(imgs);
-  fs.readFile('./index.html', (err, data) => {
-      if (err) {
-        return {
-          statusCode: 500,
-          headers: {'Content-Type': 'text/plain; charset=utf8'},
-          body: '出错了，散会！'
-        }
-      }
-      let body = template.render(data.toString(), {
-          result: imgs
-      });
-	console.log(body);
-      return {
+  let body = await fs.readFile('./index.html', (err, data) => {
+	  console.log(data);
+	  return new Promise((resolve, reject) => {
+		  let html = template.render(data.toString(), { result: imgs  });
+		  resovle(html);
+	  });
+  })
+  return {
         statusCode: 200,
         headers: {'Content-Type': 'text/html; charset=utf8'},
         body
       }
-  })
 }
