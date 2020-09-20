@@ -12,7 +12,7 @@ let params = {
 	"word": "新垣结衣" // 关键词
 }
 
-function loadImage(keyword = '新垣结衣', pageNum = 0, pageSize = 30) {
+function loadImage(keyword = '新垣结衣', pageNum = 0, pageSize = 1) {
 	if (pageSize > 100) pageSize = 100;
 	params.pn = pageNum;
 	params.rn = pageSize;
