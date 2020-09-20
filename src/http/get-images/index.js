@@ -31,8 +31,8 @@ function loadImage(keyword = '新垣结衣', pageNum = 0, pageSize = 30) {
 				"href": element.thumbURL || element.middleURL,
 				"alt": element.fromPageTitleEnc
 			});
-      return new Promise((resolve, reject) => resolve(result));;
 		});
+		return new Promise((resolve, reject) => {resolve(result)});
 	})
 }  
 let first = true
