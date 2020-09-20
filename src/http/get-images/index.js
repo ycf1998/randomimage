@@ -1,8 +1,6 @@
-const express = require('express')
 const fetch = require('node-fetch')
 const template = require('art-template')
 const fs = require('fs')
-const app = express();
 
 let params = {
 	"tn": "resultjson_com",
