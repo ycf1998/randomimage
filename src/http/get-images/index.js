@@ -2,37 +2,75 @@ const fetch = require('node-fetch')
 const template = require('art-template')
 const fs = require('fs')
 
-let params = {
-	"tn": "resultjson_com",
-	"ipn": "rt",
-	"pn": 0, // 从第几个开始
-	"rn": 30, // 一次返回几个
-	"word": "新垣结衣" // 关键词
+/**
+ * 来源百度
+ * @param {*}} word 
+ * @param {*} pageNum 
+ * @param {*} pageSize 
+ */
+let paramsForBaidu = {
+	"tn": "resultjson_com", // 必填参数
+	"ipn": "rt", // 必填参数
+	"word": "", // 关键字
+	"pn": 0, // 起始下标
+	"rn": 0 // 每次请求n张
 }
-
-function loadImage(keyword = '新垣结衣', pageNum = 0, pageSize = 30) {
+function loadImgsForBaidu(word = '新垣结衣', pageNum = 0, pageSize = 30) {
 	if (pageSize > 100) pageSize = 100;
-	params.pn = pageNum;
-	params.rn = pageSize;
-	params.word = keyword;
-	let paramStr = Object.entries(params).map(item => item[0] + '=' + item[1]).join('&')
-	paramStr = encodeURI(paramStr);
+	paramsForBaidu.pn = pageNum;
+	paramsForBaidu.rn = pageSize;
+	paramsForBaidu.word = word;
+	let paramStr = formatUrlParams(paramsForBaidu)
 	return fetch(`https://image.baidu.com/search/acjson?${paramStr}`)
 	.then(res => res.json())
 	.then(json => {
-		let result = []
+		let imgs = [];
 		json.data.forEach(element => {
 			if (element.thumbURL == undefined) {
 				return true;
 			}
-			result.push({
+			imgs.push({
 				"href": element.thumbURL || element.middleURL,
 				"alt": element.fromPageTitleEnc
 			});
 		});
-		return new Promise((resolve, reject) => resolve(result));
+		return imgs;
 	})
 }  
+
+/**
+ * 来源搜狐
+ * @param {*}} word 
+ * @param {*} pageNum 
+ * @param {*} pageSize 
+ */
+let paramsForSouhu = {
+	"query": "", // 关键字
+	"start": 0, // 起始下标
+	"xml_len": 0, // 每次请求n张
+	"cwidth": "", // 宽
+	"cheight": "" //高
+}
+function loadImgsForSouhu(word = '新垣结衣', pageNum = 0, pageSize = 30) {
+	if (pageSize > 100) pageSize = 100;
+	paramsForSouhu.start = pageNum;
+	paramsForSouhu.xml_len = pageSize;
+	paramsForSouhu.query = word;
+	let paramStr = formatUrlParams(paramsForSouhu)
+	return fetch(`https://pic.sogou.com/api/pic/searchList?${paramStr}`)
+		.then(res => res.json())
+		.then(json => {
+			let imgs = [];
+			json.items.forEach(element => {
+				imgs.push({
+					"href": element.oriPicUrl || element.picUrl,
+					"alt": element.title
+				});
+			});
+			return imgs;
+		})
+}
+
 exports.handler = async function http(req) {
   let pageNum = Math.floor(Math.random() * 20 * params.rn);
   let keyword;
@@ -41,12 +79,18 @@ exports.handler = async function http(req) {
 	  keyword = req.queryStringParameters.word;
 	  pageSize = req.queryStringParameters.size;
   }
-  let imgs = await loadImage(keyword, pageNum, pageSize);
+  let imgsForBaidu = await loadImgsForBaidu(word, pageNum, pageSize);
+  let imgsForSouhu = await loadImgsForSouhu(word, pageNum, pageSize);
   let data = fs.readFileSync('./index.html')
-  let body = template.render(data.toString(), { result: imgs  });
+  let body = template.render(data.toString(), { result: [...imgsForBaidu, ...imgsForSouhu]  });
   return {
         statusCode: 200,
         headers: {'Content-Type': 'text/html; charset=utf8'},
         body
       }
+}
+
+function formatUrlParams(params) {
+	let paramStr = Object.entries(params).map(item => item[0] + '=' + item[1]).join('&')
+	return encodeURI(paramStr);
 }
