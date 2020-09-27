@@ -72,13 +72,13 @@ function loadImgsForSouhu(word = '新垣结衣', pageNum = 0, pageSize = 30) {
 }
 
 exports.handler = async function http(req) {
-  let pageNum = Math.floor(Math.random() * 20 * params.rn);
   let keyword;
-  let pageSize;
+  let pageSize = 25;
   if (req.queryStringParameters != null) {
 	  keyword = req.queryStringParameters.word;
-	  pageSize = req.queryStringParameters.size;
+	  pageSize = req.queryStringParameters.size || 25;
   }
+  let pageNum = Math.floor(Math.random() * 20 * pageSize);
   let imgsForBaidu = await loadImgsForBaidu(word, pageNum, pageSize);
   let imgsForSouhu = await loadImgsForSouhu(word, pageNum, pageSize);
   let data = fs.readFileSync('./index.html')
