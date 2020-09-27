@@ -76,7 +76,7 @@ exports.handler = async function http(req) {
   let pageSize = 25;
   if (req.queryStringParameters != null) {
 	  word = req.queryStringParameters.word;
-	  pageSize = req.queryStringParameters.size || 25;
+	  pageSize = req.queryStringParameters.size / 2 || 25;
   }
   let pageNum = Math.floor(Math.random() * 20 * pageSize);
   let imgsForBaidu = await loadImgsForBaidu(word, pageNum, pageSize);
