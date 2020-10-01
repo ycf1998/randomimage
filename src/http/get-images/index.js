@@ -91,7 +91,7 @@ exports.handler = async function http(req) {
 	  word = req.queryStringParameters.word;
 	  width = req.queryStringParameters.width;
 	  height = req.queryStringParameters.height;
-	  pageSize = req.queryStringParameters.size || 30;
+	  pageSize = req.queryStringParameters.size || 20;
   }
   let pageNum = Math.floor(Math.random() * 20 * pageSize);
   // 获取图片
