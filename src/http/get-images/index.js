@@ -100,7 +100,7 @@ exports.handler = async function http(req) {
   // 处理聚合图片
   let allImgs = [...imgsForBaidu, ...imgsForSouhu];
   allImgs = allImgs.filter(img => img.alt.match(word = word || '新垣结衣'))
-  allImgs = allImgs.length > pageSize ? allImgs.slice(0, pageSize) : allImgs;
+  allImgs = allImgs.length > pageSize ? allImgs.slice(Math.random() * (allImgs.length - pageSize), pageSize) : allImgs;
 
   let data = fs.readFileSync('./index.html')
   let body = template.render(data.toString(), { result: allImgs});
