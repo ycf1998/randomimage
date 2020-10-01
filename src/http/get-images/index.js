@@ -86,7 +86,7 @@ exports.handler = async function http(req) {
   let word;
   let width;
   let height;
-  let pageSize = 30;
+  let pageSize = 20;
   if (req.queryStringParameters != null) {
 	  word = req.queryStringParameters.word;
 	  width = req.queryStringParameters.width;
