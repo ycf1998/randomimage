@@ -86,12 +86,12 @@ exports.handler = async function http(req) {
   let word;
   let width;
   let height;
-  let pageSize = 25;
+  let pageSize = 30;
   if (req.queryStringParameters != null) {
 	  word = req.queryStringParameters.word;
 	  width = req.queryStringParameters.width;
 	  height = req.queryStringParameters.height;
-	  pageSize = req.queryStringParameters.size || 20;
+	  pageSize = req.queryStringParameters.size || 30;
   }
   let pageNum = Math.floor(Math.random() * 20 * pageSize);
   // 获取图片
