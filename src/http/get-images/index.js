@@ -86,12 +86,12 @@ exports.handler = async function http(req) {
   let word;
   let width;
   let height;
-  let pageSize = 20;
+  let pageSize = 25;
   if (req.queryStringParameters != null) {
 	  word = req.queryStringParameters.word;
 	  width = req.queryStringParameters.width;
 	  height = req.queryStringParameters.height;
-	  pageSize = req.queryStringParameters.size || 20;
+	  pageSize = req.queryStringParameters.size || 25;
   }
   let pageNum = Math.floor(Math.random() * 20 * pageSize);
   // 获取图片
@@ -99,8 +99,9 @@ exports.handler = async function http(req) {
   let imgsForSouhu = await loadImgsForSouhu(word, pageNum, pageSize, width, height);
   // 处理聚合图片
   let allImgs = [...imgsForBaidu, ...imgsForSouhu];
-  allImgs = allImgs.filter(img => img.alt.match(word = word || '新垣结衣'))
-  allImgs = allImgs.length > pageSize ? allImgs.slice(Math.random() * (allImgs.length - pageSize), allImgs.length) : allImgs;
+  allImgs = allImgs.filter(img => img.alt.match(word = word || '新垣结衣'));
+  shuffle(allImgs);
+  allImgs = allImgs.length > pageSize ? allImgs.slice(0, pageSize) : allImgs;
 
   let data = fs.readFileSync('./index.html')
   let body = template.render(data.toString(), { result: allImgs});
@@ -114,4 +115,15 @@ exports.handler = async function http(req) {
 function formatUrlParams(params) {
 	let paramStr = Object.entries(params).map(item => item[0] + '=' + item[1]).join('&')
 	return encodeURI(paramStr);
+}
+
+function shuffle(arr) {
+	var i = arr.length,
+		t, j
+	while (i) {
+		j = Math.floor(Math.random() * i--)
+		t = arr[i]
+		arr[i] = arr[j]
+		arr[j] = t
+	}
 }
