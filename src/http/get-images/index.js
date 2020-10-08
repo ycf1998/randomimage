@@ -2,6 +2,8 @@ const fetch = require('node-fetch')
 const template = require('art-template')
 const fs = require('fs')
 
+const defaultWord = '新垣结衣'; // 默认关键字
+
 /**
  * 来源百度
  * @param {*}} word 
@@ -17,9 +19,12 @@ let paramsForBaidu = {
 	"width": "",
 	"height": "",
 }
-function loadImgsForBaidu(word = '新垣结衣', pageNum = 0, pageSize = 100, width = '', height = '') {
+function loadImgsForBaidu(word = '', pageNum = 0, pageSize = 100, width = '', height = '') {
 	paramsForBaidu.pn = pageNum;
 	paramsForBaidu.rn = 100;
+	if (word == '') {
+		word = defaultWord;
+	}
 	paramsForBaidu.word = word;
 	paramsForBaidu.width = width;
 	paramsForBaidu.height = height;
@@ -57,6 +62,9 @@ let paramsForSouhu = {
 function loadImgsForSouhu(word = '新垣结衣', pageNum = 0, pageSize = 100, width = '', height = '') {
 	paramsForSouhu.start = pageNum;
 	paramsForSouhu.xml_len = 100;
+	if (word == '') {
+		word = defaultWord;
+	}
 	paramsForSouhu.query = word;
 	paramsForSouhu.cwidth = width;
 	paramsForSouhu.cheight = height;
@@ -79,7 +87,7 @@ exports.handler = async function http(req) {
   /**
   参数：
    关键字：word
-   显示n张：size(不超过200)
+   显示n张：size(不超过100)
    图片宽: width
    图片高: height
   **/
@@ -99,7 +107,7 @@ exports.handler = async function http(req) {
   let imgsForSouhu = await loadImgsForSouhu(word, pageNum, pageSize, width, height);
   // 处理聚合图片
   let allImgs = [...imgsForBaidu, ...imgsForSouhu];
-  allImgs = allImgs.filter(img => img.alt.match(word = word || '新垣结衣'));
+  allImgs = allImgs.filter(img => img.alt.match(word));
   shuffle(allImgs);
   allImgs = allImgs.length > pageSize ? allImgs.slice(0, pageSize) : allImgs;
 
